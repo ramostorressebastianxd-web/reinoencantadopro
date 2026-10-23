@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Reino Encantado: La Carrera Fantástica</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Pixel / Retro Style -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'VT323', monospace;
+            user-select: none;
+            background-color: #1a1c23;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .pixel-font {
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        /* Imágenes personalizadas pixel art */
+        .bg-forest-img {
+            background-image: url('image_da7827.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .bg-volcano-img {
+            background-image: url('image_da783f.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .icon-portal {
+            background-image: url('image_da7842.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .icon-trap {
+            background-image: url('image_da7844.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .icon-trivia {
+            background-image: url('image_da7846.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .icon-coin {
+            background-image: url('image_da7861.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .icon-swords {
+            background-image: url('image_da7864.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .icon-trophy {
+            background-image: url('image_da787e.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        /* Dado 3D */
+        .dice-container {
+            perspective: 600px;
+            width: 70px;
+            height: 70px;
+        }
+
+        .dice {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s cubic-bezier(0.2, 0.8, 0.3, 1);
+        }
+
+        /* Animación de rodar / girar el dado en 3D equilibrada */
+        @keyframes diceRolling {
+            0% { transform: rotateX(0deg) rotateY(0deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg); }
+        }
+
+        .dice-spin-active {
+            animation: diceRolling 0.5s ease-in-out;
+        }
+
+        .dice-face {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            border: 3px solid #2b2b2b;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.4);
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background-color: #d32f2f;
+            border-radius: 50%;
+            position: absolute;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.6);
+        }
+
+        /* Posiciones del Dado */
+        .face-1 { transform: translateZ(35px); }
+        .face-2 { transform: rotateY(180deg) translateZ(35px); }
+        .face-3 { transform: rotateY(-90deg) translateZ(35px); }
+        .face-4 { transform: rotateY(90deg) translateZ(35px); }
+        .face-5 { transform: rotateX(-90deg) translateZ(35px); }
+        .face-6 { transform: rotateX(90deg) translateZ(35px); }
+
+        /* Puntos por cara */
+        .face-1 .dot { background-color: #e53e3e; width: 16px; height: 16px; }
+        
+        .face-2 .dot:nth-child(1) { top: 12px; left: 12px; background: #2d3748; }
+        .face-2 .dot:nth-child(2) { bottom: 12px; right: 12px; background: #2d3748; }
+
+        .face-3 .dot:nth-child(1) { top: 12px; left: 12px; background: #2d3748; }
+        .face-3 .dot:nth-child(2) { top: 29px; left: 29px; background: #2d3748; }
+        .face-3 .dot:nth-child(3) { bottom: 12px; right: 12px; background: #2d3748; }
+
+        .face-4 .dot:nth-child(1) { top: 12px; left: 12px; background: #2d3748; }
+        .face-4 .dot:nth-child(2) { top: 12px; right: 12px; background: #2d3748; }
+        .face-4 .dot:nth-child(3) { bottom: 12px; left: 12px; background: #2d3748; }
+        .face-4 .dot:nth-child(4) { bottom: 12px; right: 12px; background: #2d3748; }
+
+        .face-5 .dot:nth-child(1) { top: 12px; left: 12px; background: #2d3748; }
+        .face-5 .dot:nth-child(2) { top: 12px; right: 12px; background: #2d3748; }
+        .face-5 .dot:nth-child(3) { top: 29px; left: 29px; background: #2d3748; }
+        .face-5 .dot:nth-child(4) { bottom: 12px; left: 12px; background: #2d3748; }
+        .face-5 .dot:nth-child(5) { bottom: 12px; right: 12px; background: #2d3748; }
+
+        .face-6 .dot:nth-child(1) { top: 10px; left: 12px; background: #2d3748; }
+        .face-6 .dot:nth-child(2) { top: 10px; right: 12px; background: #2d3748; }
+        .face-6 .dot:nth-child(3) { top: 29px; left: 12px; background: #2d3748; }
+        .face-6 .dot:nth-child(4) { top: 29px; right: 12px; background: #2d3748; }
+        .face-6 .dot:nth-child(5) { bottom: 10px; left: 12px; background: #2d3748; }
+        .face-6 .dot:nth-child(6) { bottom: 10px; right: 12px; background: #2d3748; }
+
+        /* Efecto Tormenta / Lluvia */
+        .weather-overlay {
+            pointer-events: none;
+            position: fixed;
+            inset: 0;
+            z-index: 40;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .rain-active {
+            background: linear-gradient(to bottom, rgba(15,23,42,0.4), rgba(30,41,59,0.6));
+            opacity: 1;
+        }
+
+        /* Estilo Tablero pixelado */
+        .board-grid {
+            display: grid;
+            gap: 6px;
+            padding: 12px;
+            background-color: rgba(0, 0, 0, 0.4);
+            border-radius: 16px;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        .tile {
+            position: relative;
+            border-radius: 8px;
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 4px;
+            min-height: 85px;
+        }
+
+        .tile:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .player-token {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.6);
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        /* Animación de salto cuando avanza el jugador */
+        @keyframes stepHop {
+            0% { transform: scale(1) translateY(0); }
+            50% { transform: scale(1.35) translateY(-8px); }
+            100% { transform: scale(1) translateY(0); }
+        }
+
+        .token-hop {
+            animation: stepHop 0.25s ease-in-out;
+        }
+
+        .btn-retro {
+            background: linear-gradient(180deg, #4f46e5 0%, #3730a3 100%);
+            border: 3px solid #6366f1;
+            border-bottom: 5px solid #1e1b4b;
+            text-shadow: 1px 1px 0px #000;
+            transition: all 0.1s;
+            cursor: pointer;
+        }
+
+        .btn-retro:active {
+            transform: translateY(2px);
+            border-bottom: 3px solid #1e1b4b;
+        }
+
+        .btn-retro:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+    </style>
+</head>
+<body class="bg-forest-img min-h-screen flex flex-col justify-between relative">
+
+    <div id="weatherOverlay" class="weather-overlay"></div>
+
+    <!-- NAVEGACIÓN SUPERIOR / ENCABEZADO -->
+    <header class="bg-slate-900/90 border-b-4 border-indigo-600 p-3 flex justify-between items-center z-10 shadow-lg">
+        <div class="flex items-center space-x-3">
+            <i class="fa-solid fa-hat-wizard text-yellow-400 text-2xl"></i>
+            <h1 class="pixel-font text-xs sm:text-sm md:text-base text-yellow-300 tracking-wider">EL REINO ENCANTADO</h1>
+        </div>
+        
+        <div class="flex items-center space-x-2 sm:space-x-4">
+            <div id="weatherBadge" class="hidden sm:flex items-center px-3 py-1 bg-slate-800 rounded-full border border-slate-600 text-xs text-sky-300">
+                <i class="fa-solid fa-sun mr-1 text-yellow-400" id="weatherIcon"></i>
+                <span id="weatherText">Soleado</span>
+            </div>
+
+            <button id="saveBtn" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2 sm:px-3 py-1 rounded text-xs border-b-2 border-emerald-800 flex items-center cursor-pointer">
+                <i class="fa-solid fa-floppy-disk mr-1"></i> Guardar
+            </button>
+            <button id="resetBtn" class="bg-rose-600 hover:bg-rose-500 text-white px-2 sm:px-3 py-1 rounded text-xs border-b-2 border-rose-800 flex items-center cursor-pointer">
+                <i class="fa-solid fa-rotate-left mr-1"></i> Reiniciar
+            </button>
+        </div>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL DEL JUEGO -->
+    <main class="flex-1 container mx-auto p-2 sm:p-4 flex flex-col lg:flex-row gap-4 z-10 items-center lg:items-start justify-center">
+
+        <!-- LADO IZQUIERDO: SECCIÓN DEL TABLERO -->
+        <section class="flex-1 w-full max-w-4xl">
+            <div id="boardContainer" class="board-grid grid-cols-5 sm:grid-cols-6 md:grid-cols-10">
+                <!-- Se genera dinámicamente vía JS -->
+            </div>
+        </section>
+
+        <!-- LADO DERECHO: PANEL DE CONTROL Y JUGADORES -->
+        <section class="w-full lg:w-80 flex flex-col gap-4">
+
+            <!-- CONTROL DEL DADO -->
+            <div class="bg-slate-900/90 border-2 border-amber-500/50 rounded-xl p-4 text-center shadow-xl flex flex-col items-center">
+                <h3 class="pixel-font text-xs text-amber-400 mb-2">TURNO ACTUAL</h3>
+                <div id="turnIndicator" class="text-lg font-bold text-white mb-3 flex items-center justify-center space-x-2">
+                    <span id="currentPlayerColor" class="w-4 h-4 rounded-full inline-block"></span>
+                    <span id="currentPlayerName">Jugador 1</span>
+                </div>
+
+                <!-- Dado 3D Interactivo -->
+                <div id="diceArea" class="my-2 cursor-pointer">
+                    <div class="dice-container">
+                        <div id="dice3d" class="dice">
+                            <div class="dice-face face-1"><div class="dot"></div></div>
+                            <div class="dice-face face-2"><div class="dot"></div><div class="dot"></div></div>
+                            <div class="dice-face face-3"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+                            <div class="dice-face face-4"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+                            <div class="dice-face face-5"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+                            <div class="dice-face face-6"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="rollBtn" class="btn-retro w-full py-2 mt-3 text-white pixel-font text-xs rounded-lg flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-dice text-base"></i>
+                    <span>LANZAR DADO</span>
+                </button>
+            </div>
+
+            <!-- LISTA DE JUGADORES Y POSICIONES -->
+            <div class="bg-slate-900/90 border-2 border-slate-700 rounded-xl p-4 shadow-xl">
+                <h3 class="pixel-font text-xs text-indigo-300 mb-3 border-b border-slate-700 pb-2 flex items-center justify-between">
+                    <span>POSICIONES</span>
+                    <i class="fa-solid fa-users"></i>
+                </h3>
+                <div id="playersList" class="space-y-2">
+                    <!-- Jugadores renderizados aquí -->
+                </div>
+            </div>
+
+            <!-- REGISTRO DE EVENTOS Y MENSAJES -->
+            <div class="bg-slate-900/90 border-2 border-slate-700 rounded-xl p-3 shadow-xl flex-1 flex flex-col h-40">
+                <h4 class="text-xs text-slate-400 font-bold mb-1 uppercase tracking-wider flex items-center">
+                    <i class="fa-solid fa-scroll mr-1"></i> Diario de Aventura
+                </h4>
+                <div id="gameLog" class="flex-1 overflow-y-auto text-xs space-y-1 pr-1 font-mono text-slate-300">
+                    <p class="text-emerald-400">¡Bienvenidos al Reino Encantado!</p>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- MODAL DE CONFIGURACIÓN INICIAL -->
+    <div id="configModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border-4 border-indigo-500 rounded-2xl p-6 max-w-md w-full shadow-2xl">
+            <h2 class="pixel-font text-base text-yellow-400 text-center mb-4">NUEVA AVENTURA</h2>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs text-indigo-200 mb-1 font-bold">Número de Jugadores (2-4):</label>
+                    <select id="cfgPlayerCount" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-sm text-white focus:outline-none focus:border-indigo-400">
+                        <option value="2">2 Jugadores</option>
+                        <option value="3">3 Jugadores</option>
+                        <option value="4" selected>4 Jugadores</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-indigo-200 mb-1 font-bold">Modo de Juego:</label>
+                    <select id="cfgBotMode" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-sm text-white focus:outline-none focus:border-indigo-400">
+                        <option value="human">Todos Humanos</option>
+                        <option value="1bot" selected>1 Humano + Bots</option>
+                        <option value="2bot">2 Humanos + Bots</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-indigo-200 mb-1 font-bold">Dificultad de los Bots:</label>
+                    <select id="cfgBotDifficulty" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-sm text-white focus:outline-none focus:border-indigo-400">
+                        <option value="easy">Fácil (Movimiento normal)</option>
+                        <option value="hard">Normal (Avanzado)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-indigo-200 mb-1 font-bold">Longitud del Camino:</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button type="button" id="btnSize30" class="p-2 border-2 border-indigo-500 bg-indigo-900/50 rounded text-center text-xs text-white">
+                            30 Casillas (Rápido)
+                        </button>
+                        <button type="button" id="btnSize60" class="p-2 border-2 border-slate-700 bg-slate-800 rounded text-center text-xs text-slate-400">
+                            60 Casillas (Largo)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <button id="startGameBtn" class="btn-retro w-full py-3 mt-6 text-white pixel-font text-xs rounded-xl">
+                ¡COMENZAR LA CARRERA!
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL DE EVENTOS -->
+    <div id="eventModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 hidden">
+        <div id="eventCard" class="bg-slate-900 border-4 border-yellow-500 rounded-2xl p-6 max-w-lg w-full shadow-2xl relative">
+            <div id="eventHeader" class="text-center mb-4">
+                <div id="eventIcon" class="w-16 h-16 mx-auto mb-2 bg-contain bg-no-repeat bg-center"></div>
+                <h3 id="eventTitle" class="pixel-font text-sm text-yellow-400">EVENTO</h3>
+            </div>
+            
+            <div id="eventBody" class="text-center text-base mb-6 text-slate-200">
+                <!-- Contenido dinámico -->
+            </div>
+
+            <div id="eventActions" class="flex justify-center gap-3">
+                <!-- Botones de respuesta -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.boardSize = 30;
+        window.players = [];
+        window.currentPlayerIndex = 0;
+        window.isRolling = false;
+        window.isGameOver = false;
+        window.currentWeather = 'sunny';
+        window.audioCtx = null;
+
+        const TRIVIA_QUESTIONS = [
+            { q: "¿De qué color es la hierba del campo normalmente?", options: ["Verde", "Azul", "Roja"], correct: 0 },
+            { q: "¿Cuántas patas tiene un perro?", options: ["2", "4", "6"], correct: 1 },
+            { q: "¿Qué animal produce leche y dice 'miau'?", options: ["Vaca", "Perro", "Gato"], correct: 2 },
+            { q: "¿De qué color es el cielo en un día soleado?", options: ["Verde", "Azul", "Amarillo"], correct: 1 },
+            { q: "¿Cuántos días tiene una semana?", options: ["5 días", "7 días", "10 días"], correct: 1 },
+            { q: "¿Qué fruta es amarilla y les gusta a los monos?", options: ["Plátano", "Manzana", "Uva"], correct: 0 },
+            { q: "¿Qué animal produce leche en la granja y hace 'muu'?", options: ["Oveja", "Vaca", "Gallina"], correct: 1 },
+            { q: "¿Cuál es el resultado de sumar 1 + 1?", options: ["3", "2", "4"], correct: 1 },
+            { q: "¿Qué agua cae de las nubes cuando llueve?", options: ["Jugo", "Agua", "Leche"], correct: 1 },
+            { q: "¿Qué astro ilumina el día?", options: ["La Luna", "El Sol", "Una Estrella"], correct: 1 },
+            { q: "¿Qué animal pone huevos y dice 'coco-ro-co'?", options: ["Pato", "Gallina", "Pájaro"], correct: 1 },
+            { q: "¿De qué color es la nieve?", options: ["Blanca", "Negra", "Rosada"], correct: 0 },
+            { q: "¿Cuántos dedos tenemos en una mano?", options: ["4", "5", "10"], correct: 1 },
+            { q: "¿Qué usamos para ver cosas en la noche si está oscuro?", options: ["Linterna", "Espejo", "Cuchara"], correct: 0 }
+        ];
+
+        window.availableTriviaQuestions = [];
+
+        const PLAYER_COLORS = [
+            { bg: '#ef4444', text: 'Roja', name: 'Caballero Rojo' },
+            { bg: '#3b82f6', text: 'Azul', name: 'Mago Azul' },
+            { bg: '#10b981', text: 'Verde', name: 'Elfo Verde' },
+            { bg: '#f59e0b', text: 'Amarilla', name: 'Arquera Dorada' }
+        ];
+
+        const TILE_TYPES = {
+            START: { id: 'start', label: 'INICIO', class: 'bg-emerald-900/80 border-emerald-400' },
+            NORMAL: { id: 'normal', label: '', class: 'bg-slate-800/80 border-slate-600' },
+            PORTAL: { id: 'portal', label: 'Portal', class: 'bg-indigo-900/80 border-indigo-400', icon: 'icon-portal' },
+            TRAP: { id: 'trap', label: 'Trampa', class: 'bg-rose-900/80 border-rose-500', icon: 'icon-trap' },
+            TRIVIA: { id: 'trivia', label: 'Trivia', class: 'bg-purple-900/80 border-purple-400', icon: 'icon-trivia' },
+            COIN: { id: 'coin', label: 'Suerte', class: 'bg-amber-900/80 border-amber-400', icon: 'icon-coin' },
+            MINIGAME: { id: 'minigame', label: 'Reto', class: 'bg-cyan-900/80 border-cyan-400', icon: 'icon-swords' },
+            BOSS: { id: 'boss', label: 'DRAGÓN', class: 'bg-volcano-img border-red-600', icon: '' },
+            FINISH: { id: 'finish', label: 'META', class: 'bg-yellow-900/80 border-yellow-400', icon: 'icon-trophy' }
+        };
+
+        window.boardLayout = [];
+
+        window.selectBoardSize = function(size) {
+            window.boardSize = size;
+            document.getElementById('btnSize30').className = size === 30 
+                ? 'p-2 border-2 border-indigo-500 bg-indigo-900/50 rounded text-center text-xs text-white'
+                : 'p-2 border-2 border-slate-700 bg-slate-800 rounded text-center text-xs text-slate-400';
+            document.getElementById('btnSize60').className = size === 60 
+                ? 'p-2 border-2 border-indigo-500 bg-indigo-900/50 rounded text-center text-xs text-white'
+                : 'p-2 border-2 border-slate-700 bg-slate-800 rounded text-center text-xs text-slate-400';
+        };
+
+        window.startGame = function() {
+            const count = parseInt(document.getElementById('cfgPlayerCount').value);
+            const botMode = document.getElementById('cfgBotMode').value;
+            const difficulty = document.getElementById('cfgBotDifficulty').value;
+
+            window.players = [];
+            for (let i = 0; i < count; i++) {
+                let isBot = false;
+                if (botMode === '1bot' && i >= 1) isBot = true;
+                if (botMode === '2bot' && i >= 2) isBot = true;
+
+                window.players.push({
+                    id: i + 1,
+                    name: isBot ? `Bot ${i + 1}` : `Jugador ${i + 1}`,
+                    color: PLAYER_COLORS[i].bg,
+                    colorName: PLAYER_COLORS[i].text,
+                    position: 0,
+                    isBot: isBot,
+                    difficulty: difficulty,
+                    skipTurn: false
+                });
+            }
+
+            window.resetTriviaDeck();
+            window.generateBoardLayout();
+            window.renderBoard();
+
+            window.currentPlayerIndex = 0;
+            window.isGameOver = false;
+            window.isRolling = false;
+            document.getElementById('rollBtn').disabled = false;
+            document.getElementById('configModal').classList.add('hidden');
+            
+            window.logMessage(`¡Juego iniciado! Modo: ${window.boardSize} casillas.`, 'text-yellow-300');
+            window.updateUI();
+        };
+
+        window.resetTriviaDeck = function() {
+            window.availableTriviaQuestions = [...TRIVIA_QUESTIONS];
+            window.shuffleArray(window.availableTriviaQuestions);
+        };
+
+        window.shuffleArray = function(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+        };
+
+        window.generateBoardLayout = function() {
+            window.boardLayout = [];
+            for (let i = 0; i < window.boardSize; i++) {
+                if (i === 0) {
+                    window.boardLayout.push(TILE_TYPES.START);
+                } else if (i === window.boardSize - 1) {
+                    window.boardLayout.push(TILE_TYPES.FINISH);
+                } else if (i === 29 && (window.boardSize === 60 || window.boardSize === 30)) {
+                    window.boardLayout.push(TILE_TYPES.BOSS);
+                } else {
+                    const rand = Math.random();
+                    if (rand < 0.12) window.boardLayout.push(TILE_TYPES.PORTAL);
+                    else if (rand < 0.24) window.boardLayout.push(TILE_TYPES.TRAP);
+                    else if (rand < 0.40) window.boardLayout.push(TILE_TYPES.TRIVIA);
+                    else if (rand < 0.52) window.boardLayout.push(TILE_TYPES.COIN);
+                    else if (rand < 0.62) window.boardLayout.push(TILE_TYPES.MINIGAME);
+                    else window.boardLayout.push(TILE_TYPES.NORMAL);
+                }
+            }
+        };
+
+        window.renderBoard = function() {
+            const container = document.getElementById('boardContainer');
+            container.innerHTML = '';
+
+            window.boardLayout.forEach((tileType, index) => {
+                const tileEl = document.createElement('div');
+                tileEl.id = `tile-${index}`;
+                tileEl.className = `tile ${tileType.class}`;
+
+                const numSpan = document.createElement('span');
+                numSpan.className = 'text-xs font-bold text-yellow-300 opacity-90 self-start';
+                numSpan.innerText = index + 1;
+                tileEl.appendChild(numSpan);
+
+                if (tileType.icon) {
+                    const iconDiv = document.createElement('div');
+                    iconDiv.className = `w-9 h-9 ${tileType.icon}`;
+                    tileEl.appendChild(iconDiv);
+                } else if (tileType === TILE_TYPES.BOSS) {
+                    const bossTag = document.createElement('span');
+                    bossTag.className = 'text-2xl font-bold';
+                    bossTag.innerText = '🐉';
+                    tileEl.appendChild(bossTag);
+                }
+
+                const labelSpan = document.createElement('span');
+                labelSpan.className = 'text-xs sm:text-sm font-bold text-center leading-tight tracking-wide drop-shadow-md text-white my-1';
+                labelSpan.innerText = tileType.label;
+                tileEl.appendChild(labelSpan);
+
+                const tokensDiv = document.createElement('div');
+                tokensDiv.id = `tile-tokens-${index}`;
+                tokensDiv.className = 'flex flex-wrap gap-1 justify-center items-center w-full mt-1';
+                tileEl.appendChild(tokensDiv);
+
+                container.appendChild(tileEl);
+            });
+
+            window.renderPlayerTokens();
+        };
+
+        window.renderPlayerTokens = function() {
+            for (let i = 0; i < window.boardSize; i++) {
+                const tokenContainer = document.getElementById(`tile-tokens-${i}`);
+                if (tokenContainer) tokenContainer.innerHTML = '';
+            }
+
+            window.players.forEach((player) => {
+                const tokenContainer = document.getElementById(`tile-tokens-${player.position}`);
+                if (tokenContainer) {
+                    const token = document.createElement('div');
+                    token.className = 'player-token';
+                    token.style.backgroundColor = player.color;
+                    token.innerText = player.id;
+                    token.title = `${player.name} (Casilla ${player.position + 1})`;
+                    tokenContainer.appendChild(token);
+                }
+            });
+        };
+
+        window.handleRollDiceClick = function() {
+            if (window.isRolling || window.isGameOver) return;
+            const currentPlayer = window.players[window.currentPlayerIndex];
+            if (currentPlayer && currentPlayer.isBot) return;
+
+            window.rollDice();
+        };
+
+        window.rollDice = function() {
+            window.isRolling = true;
+            document.getElementById('rollBtn').disabled = true;
+
+            const dice3d = document.getElementById('dice3d');
+            const result = Math.floor(Math.random() * 6) + 1;
+
+            // Limpiamos transformaciones previas para evitar rotaciones acumuladas extrañas
+            dice3d.style.transition = 'none';
+            dice3d.style.transform = 'rotateX(0deg) rotateY(0deg)';
+            void dice3d.offsetWidth; // Forzar reflow
+
+            // Rotaciones 3D exactas para mostrar la cara correspondiente
+            const rotations = {
+                1: { x: 0, y: 0 },
+                2: { x: 0, y: -180 },
+                3: { x: 0, y: 90 },
+                4: { x: 0, y: -90 },
+                5: { x: 90, y: 0 },
+                6: { x: -90, y: 0 }
+            };
+
+            const rot = rotations[result];
+
+            // Iniciar animación de rodado uniforme (1 solo giro fluido de 360 grados + posición final)
+            dice3d.style.transition = 'transform 0.6s cubic-bezier(0.2, 0.8, 0.3, 1)';
+            dice3d.style.transform = `rotateX(${rot.x + 360}deg) rotateY(${rot.y + 360}deg)`;
+            window.playStepSound();
+
+            setTimeout(() => {
+                window.logMessage(`${window.players[window.currentPlayerIndex].name} sacó un ${result}.`, 'text-sky-300');
+                
+                // Iniciar movimiento paso a paso
+                window.movePlayerStepByStep(window.currentPlayerIndex, result);
+            }, 650);
+        };
+
+        /* MOVIMIENTO PASO A PASO ANIMADO */
+        window.movePlayerStepByStep = function(playerIdx, stepsRemaining) {
+            const player = window.players[playerIdx];
+
+            if (stepsRemaining <= 0 || player.position >= window.boardSize - 1) {
+                // Termina el movimiento por dados y evalúa casilla final
+                setTimeout(() => {
+                    window.handleTileEvent(playerIdx, player.position);
+                }, 300);
+                return;
+            }
+
+            // Avanzar 1 casilla
+            player.position += 1;
+            window.renderPlayerTokens();
+
+            // Agregar efecto visual de rebotito al token
+            const tokenContainer = document.getElementById(`tile-tokens-${player.position}`);
+            if (tokenContainer) {
+                const currentToken = tokenContainer.querySelector(`.player-token`);
+                if (currentToken) {
+                    currentToken.classList.remove('token-hop');
+                    void currentToken.offsetWidth; // Reflow
+                    currentToken.classList.add('token-hop');
+                }
+            }
+
+            // Reproducir sonido sutil de paso (Web Audio API)
+            window.playStepSound();
+
+            // Esperar antes del siguiente paso (ritmo fluido y natural)
+            setTimeout(() => {
+                window.movePlayerStepByStep(playerIdx, stepsRemaining - 1);
+            }, 280);
+        };
+
+        /* Efecto de sonido retro al dar un paso */
+        window.playStepSound = function() {
+            try {
+                if (!window.audioCtx) {
+                    window.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (window.audioCtx.state === 'suspended') {
+                    window.audioCtx.resume();
+                }
+                const osc = window.audioCtx.createOscillator();
+                const gain = window.audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(320, window.audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(150, window.audioCtx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.12, window.audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, window.audioCtx.currentTime + 0.08);
+                osc.connect(gain);
+                gain.connect(window.audioCtx.destination);
+                osc.start();
+                osc.stop(window.audioCtx.currentTime + 0.08);
+            } catch (e) {
+                // Si el navegador bloquea audio por política de interacciones
+            }
+        };
+
+        window.movePlayer = function(playerIdx, steps) {
+            // Reutiliza el movimiento animado para efectos/recompensas de casillas
+            window.movePlayerStepByStep(playerIdx, steps);
+        };
+
+        window.handleTileEvent = function(playerIdx, position) {
+            const player = window.players[playerIdx];
+            const tileType = window.boardLayout[position];
+
+            if (position === window.boardSize - 1) {
+                window.isGameOver = true;
+                window.showModalEvent(
+                    'icon-trophy',
+                    '¡VICTORIA FANTÁSTICA!',
+                    `<p class="text-xl text-yellow-300 font-bold mb-2">¡${player.name} ha alcanzado la Meta!</p><p>¡Ha coronado el Reino Encantado con gloria!</p>`,
+                    [{ text: '¡Excelente!', class: 'btn-retro px-6 py-2', action: window.closeModal }]
+                );
+                return;
+            }
+
+            if (tileType === TILE_TYPES.PORTAL) {
+                const bonus = 2;
+                window.logMessage(`✨ ¡Portal mágico! Avanza ${bonus} casillas extra.`, 'text-indigo-400');
+                
+                if (player.isBot) {
+                    setTimeout(() => window.movePlayer(playerIdx, bonus), 800);
+                } else {
+                    window.showModalEvent(
+                        'icon-portal',
+                        '✨ PORTAL MÁGICO',
+                        `<p class="text-base text-indigo-200 mb-4">¡Un vórtice místico se ha abierto a tus pies!<br><strong class="text-yellow-300">Avanzas ${bonus} casillas extra.</strong></p>`,
+                        [{
+                            text: '¡Avanzar!',
+                            class: 'btn-retro px-6 py-2',
+                            action: () => {
+                                window.closeModal();
+                                window.movePlayer(playerIdx, bonus);
+                            }
+                        }]
+                    );
+                }
+                return;
+            } else if (tileType === TILE_TYPES.TRAP) {
+                const penalty = 2;
+                window.logMessage(`⚠️ ¡Trampa de garras! Retrocede ${penalty} casillas.`, 'text-rose-400');
+                
+                if (player.isBot) {
+                    setTimeout(() => {
+                        player.position = Math.max(0, player.position - penalty);
+                        window.renderPlayerTokens();
+                        window.finishTurn();
+                    }, 800);
+                } else {
+                    window.showModalEvent(
+                        'icon-trap',
+                        '⚠️ ¡TRAMPA DE GARRAS!',
+                        `<p class="text-base text-rose-200 mb-4">¡Caíste en una emboscada del bosque!<br><strong class="text-red-400">Retrocedes ${penalty} casillas.</strong></p>`,
+                        [{
+                            text: 'Retroceder',
+                            class: 'btn-retro px-6 py-2 bg-rose-700 border-rose-500',
+                            action: () => {
+                                window.closeModal();
+                                player.position = Math.max(0, player.position - penalty);
+                                window.renderPlayerTokens();
+                                window.finishTurn();
+                            }
+                        }]
+                    );
+                }
+                return;
+            } else if (tileType === TILE_TYPES.TRIVIA) {
+                window.triggerTriviaEvent(playerIdx);
+                return;
+            } else if (tileType === TILE_TYPES.COIN) {
+                window.triggerLuckCard(playerIdx);
+                return;
+            } else if (tileType === TILE_TYPES.MINIGAME) {
+                window.triggerMinigame(playerIdx);
+                return;
+            } else if (tileType === TILE_TYPES.BOSS) {
+                window.triggerBossFight(playerIdx);
+                return;
+            }
+
+            window.finishTurn();
+        };
+
+        window.triggerTriviaEvent = function(playerIdx) {
+            const player = window.players[playerIdx];
+
+            if (window.availableTriviaQuestions.length === 0) {
+                window.resetTriviaDeck();
+            }
+
+            const qObj = window.availableTriviaQuestions.pop();
+
+            if (player.isBot) {
+                const isCorrect = Math.random() < (player.difficulty === 'easy' ? 0.6 : 0.85);
+                setTimeout(() => {
+                    if (isCorrect) {
+                        window.logMessage(`🧠 ${player.name} (Bot) respondió CORRECTAMENTE la trivia. Avanza 1.`, 'text-purple-300');
+                        window.movePlayer(playerIdx, 1);
+                    } else {
+                        window.logMessage(`❌ ${player.name} (Bot) falló la trivia.`, 'text-slate-400');
+                        window.finishTurn();
+                    }
+                }, 800);
+                return;
+            }
+
+            let optionsHTML = '';
+            qObj.options.forEach((opt, idx) => {
+                optionsHTML += `
+                    <button onclick="window.answerTrivia(${playerIdx}, ${idx}, ${qObj.correct})" 
+                            class="w-full bg-slate-800 hover:bg-purple-700 text-white p-3 rounded-xl border-2 border-purple-500 font-bold text-left text-sm transition-all mb-2 cursor-pointer">
+                        ${idx + 1}. ${opt}
+                    </button>
+                `;
+            });
+
+            window.showModalEvent(
+                'icon-trivia',
+                'TRIVIA MÁGICA',
+                `<p class="text-lg font-bold mb-4">${qObj.q}</p><div class="flex flex-col gap-1">${optionsHTML}</div>`,
+                []
+            );
+        };
+
+        window.answerTrivia = function(playerIdx, selected, correct) {
+            window.closeModal();
+            if (selected === correct) {
+                window.logMessage(`¡Correcto! Avanzas 1 casilla extra.`, 'text-emerald-400');
+                window.movePlayer(playerIdx, 1);
+            } else {
+                window.logMessage(`Respuesta incorrecta. Permaneces en tu posición.`, 'text-rose-400');
+                window.finishTurn();
+            }
+        };
+
+        window.triggerLuckCard = function(playerIdx) {
+            const player = window.players[playerIdx];
+            const luckEvents = [
+                { text: "¡Encontraste una poción de prisa! Avanzas 2 casillas.", move: 2 },
+                { text: "¡Sopló un viento mágico favorable! Avanzas 1 casilla.", move: 1 },
+                { text: "Te detuviste a descansar en la fuente. Pierdes el próximo turno.", skip: true }
+            ];
+
+            const ev = luckEvents[Math.floor(Math.random() * luckEvents.length)];
+
+            if (player.isBot) {
+                window.logMessage(`🍀 ${player.name}: ${ev.text}`, 'text-amber-300');
+                if (ev.move) window.movePlayer(playerIdx, ev.move);
+                else if (ev.skip) { player.skipTurn = true; window.finishTurn(); }
+                else window.finishTurn();
+                return;
+            }
+
+            window.showModalEvent(
+                'icon-coin',
+                'CARTA DE SUERTE',
+                `<p class="text-base text-amber-200 mb-4">${ev.text}</p>`,
+                [{
+                    text: 'Continuar',
+                    class: 'btn-retro px-6 py-2',
+                    action: () => {
+                        window.closeModal();
+                        if (ev.move) window.movePlayer(playerIdx, ev.move);
+                        else if (ev.skip) { player.skipTurn = true; window.finishTurn(); }
+                        else window.finishTurn();
+                    }
+                }]
+            );
+        };
+
+        window.triggerMinigame = function(playerIdx) {
+            const player = window.players[playerIdx];
+
+            if (player.isBot) {
+                const win = Math.random() > 0.5;
+                window.logMessage(`⚔️ ${player.name} ${win ? 'ganó' : 'perdió'} el reto de espadas.`, 'text-cyan-300');
+                if (win) window.movePlayer(playerIdx, 1);
+                else window.finishTurn();
+                return;
+            }
+
+            window.showModalEvent(
+                'icon-swords',
+                'RETO DE DUELO',
+                `<p class="text-sm mb-4">¡Elige tu hechizo para vencer al Guardián!</p>
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="window.playMinigame(${playerIdx}, 'Fuego')" class="bg-red-800 hover:bg-red-700 p-2 rounded border border-red-500 font-bold cursor-pointer">🔥 Fuego</button>
+                    <button onclick="window.playMinigame(${playerIdx}, 'Agua')" class="bg-blue-800 hover:bg-blue-700 p-2 rounded border border-blue-500 font-bold cursor-pointer">💧 Agua</button>
+                    <button onclick="window.playMinigame(${playerIdx}, 'Planta')" class="bg-emerald-800 hover:bg-emerald-700 p-2 rounded border border-emerald-500 font-bold cursor-pointer">🌿 Planta</button>
+                </div>`,
+                []
+            );
+        };
+
+        window.playMinigame = function(playerIdx, choice) {
+            window.closeModal();
+            const options = ['Fuego', 'Agua', 'Planta'];
+            const botChoice = options[Math.floor(Math.random() * options.length)];
+
+            let won = false;
+            if (
+                (choice === 'Fuego' && botChoice === 'Planta') ||
+                (choice === 'Agua' && botChoice === 'Fuego') ||
+                (choice === 'Planta' && botChoice === 'Agua')
+            ) {
+                won = true;
+            }
+
+            if (won) {
+                window.logMessage(`⚔️ ¡Lanzaste ${choice} contra ${botChoice}! ¡Ganaste el duelo y avanzas 2 casillas!`, 'text-emerald-400');
+                window.movePlayer(playerIdx, 2);
+            } else {
+                window.logMessage(`⚔️ Lanzaste ${choice} contra ${botChoice}. ¡Empate o derrota! Te quedas aquí.`, 'text-slate-400');
+                window.finishTurn();
+            }
+        };
+
+        window.triggerBossFight = function(playerIdx) {
+            const player = window.players[playerIdx];
+
+            if (player.isBot) {
+                const defeat = Math.random() > 0.4;
+                window.logMessage(`🐉 ${player.name} se enfrentó al Dragón del Volcán... ${defeat ? '¡Lo venció!' : '¡Fue repelido 2 casillas!'}`, 'text-red-400');
+                if (!defeat) {
+                    player.position = Math.max(0, player.position - 2);
+                    window.renderPlayerTokens();
+                }
+                window.finishTurn();
+                return;
+            }
+
+            window.showModalEvent(
+                '',
+                '🌋 GUARDIÁN DRAGÓN DEL VOLCÁN',
+                `<p class="text-sm mb-3 text-red-300 font-bold">¡Has entrado a la Guarida del Dragón (Casilla 30)!</p>
+                 <p class="text-xs mb-4 text-slate-200">Para pasar debes rodar un número PAR (2, 4 o 6) en un dado mágico especial.</p>`,
+                [{
+                    text: '🎲 Lanzar contra el Dragón',
+                    class: 'btn-retro px-6 py-2 bg-red-700 border-red-500',
+                    action: () => {
+                        window.closeModal();
+                        const roll = Math.floor(Math.random() * 6) + 1;
+                        if (roll % 2 === 0) {
+                            window.logMessage(`🔥 ¡Sacaste un ${roll} (PAR)! ¡Derrotaste al Dragón y avanzas 1 extra!`, 'text-yellow-400');
+                            window.movePlayer(playerIdx, 1);
+                        } else {
+                            window.logMessage(`🔥 Sacaste un ${roll} (IMPAR). El Dragón te repele 2 casillas atrás.`, 'text-rose-400');
+                            player.position = Math.max(0, player.position - 2);
+                            window.renderPlayerTokens();
+                            window.finishTurn();
+                        }
+                    }
+                }]
+            );
+        };
+
+        window.finishTurn = function() {
+            if (window.isGameOver) return;
+
+            window.currentPlayerIndex = (window.currentPlayerIndex + 1) % window.players.length;
+            const nextPlayer = window.players[window.currentPlayerIndex];
+
+            if (nextPlayer.skipTurn) {
+                nextPlayer.skipTurn = false;
+                window.logMessage(`⏳ ${nextPlayer.name} pierde su turno recuperándose.`, 'text-amber-400');
+                window.finishTurn();
+                return;
+            }
+
+            window.updateUI();
+
+            window.isRolling = false;
+            document.getElementById('rollBtn').disabled = false;
+
+            if (nextPlayer.isBot) {
+                document.getElementById('rollBtn').disabled = true;
+                setTimeout(() => {
+                    window.rollDice();
+                }, 1000);
+            }
+        };
+
+        window.updateUI = function() {
+            const player = window.players[window.currentPlayerIndex];
+            if (!player) return;
+
+            document.getElementById('currentPlayerName').innerText = player.name;
+            document.getElementById('currentPlayerColor').style.backgroundColor = player.color;
+
+            const listEl = document.getElementById('playersList');
+            listEl.innerHTML = '';
+            window.players.forEach((p) => {
+                const row = document.createElement('div');
+                row.className = `flex justify-between items-center p-2 rounded ${p.id === player.id ? 'bg-indigo-950/80 border border-indigo-500' : 'bg-slate-800/60'}`;
+                row.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3 h-3 rounded-full" style="background-color: ${p.color}"></span>
+                        <span class="text-xs font-bold text-white">${p.name} ${p.isBot ? '🤖' : ''}</span>
+                    </div>
+                    <span class="text-xs text-yellow-300 font-mono">Casilla ${p.position + 1}</span>
+                `;
+                listEl.appendChild(row);
+            });
+        };
+
+        window.logMessage = function(msg, colorClass = 'text-slate-300') {
+            const logContainer = document.getElementById('gameLog');
+            const p = document.createElement('p');
+            p.className = `${colorClass} leading-tight`;
+            p.innerText = `> ${msg}`;
+            logContainer.appendChild(p);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        };
+
+        window.showModalEvent = function(iconClass, title, bodyHTML, actions) {
+            const modal = document.getElementById('eventModal');
+            const iconEl = document.getElementById('eventIcon');
+            const titleEl = document.getElementById('eventTitle');
+            const bodyEl = document.getElementById('eventBody');
+            const actionsEl = document.getElementById('eventActions');
+
+            iconEl.className = `w-16 h-16 mx-auto mb-2 bg-contain bg-no-repeat bg-center ${iconClass}`;
+            titleEl.innerText = title;
+            bodyEl.innerHTML = bodyHTML;
+            actionsEl.innerHTML = '';
+
+            actions.forEach(act => {
+                const btn = document.createElement('button');
+                btn.className = act.class || 'btn-retro px-4 py-2 text-xs';
+                btn.innerText = act.text;
+                btn.onclick = act.action;
+                actionsEl.appendChild(btn);
+            });
+
+            modal.classList.remove('hidden');
+        };
+
+        window.closeModal = function() {
+            document.getElementById('eventModal').classList.add('hidden');
+        };
+
+        window.saveGame = function() {
+            const gameState = {
+                boardSize: window.boardSize,
+                players: window.players,
+                currentPlayerIndex: window.currentPlayerIndex,
+                currentWeather: window.currentWeather
+            };
+            localStorage.setItem('reino_encantado_save', JSON.stringify(gameState));
+            window.logMessage('💾 Partida guardada exitosamente.', 'text-emerald-400');
+        };
+
+        /* MODAL PERSONALIZADO DE REINICIO DE PARTIDA (Reemplaza confirm nativo) */
+        window.confirmReset = function() {
+            window.showModalEvent(
+                'fa-solid fa-rotate-left text-rose-500 text-4xl flex items-center justify-center',
+                '¿REINICIAR PARTIDA?',
+                '<p class="text-sm text-slate-200 mb-2">¿Estás seguro de que deseas reiniciar la partida actual?</p><p class="text-xs text-rose-300">Regresarás al menú de configuración inicial.</p>',
+                [
+                    {
+                        text: 'Sí, Reiniciar',
+                        class: 'bg-rose-600 hover:bg-rose-500 text-white border-2 border-rose-400 font-bold px-4 py-2 text-xs rounded-lg cursor-pointer',
+                        action: () => {
+                            window.closeModal();
+                            window.isGameOver = true;
+                            window.isRolling = false;
+                            document.getElementById('configModal').classList.remove('hidden');
+                            window.logMessage('🔄 La partida ha sido reiniciada.', 'text-rose-400');
+                        }
+                    },
+                    {
+                        text: 'Cancelar',
+                        class: 'bg-slate-700 hover:bg-slate-600 text-slate-200 border-2 border-slate-500 font-bold px-4 py-2 text-xs rounded-lg cursor-pointer',
+                        action: window.closeModal
+                    }
+                ]
+            );
+        };
+
+        window.onload = function() {
+            document.getElementById('btnSize30').addEventListener('click', () => window.selectBoardSize(30));
+            document.getElementById('btnSize60').addEventListener('click', () => window.selectBoardSize(60));
+            document.getElementById('startGameBtn').addEventListener('click', window.startGame);
+            document.getElementById('rollBtn').addEventListener('click', window.handleRollDiceClick);
+            document.getElementById('diceArea').addEventListener('click', window.handleRollDiceClick);
+            document.getElementById('saveBtn').addEventListener('click', window.saveGame);
+            document.getElementById('resetBtn').addEventListener('click', window.confirmReset);
+        };
+    </script>
+</body>
+</html>
